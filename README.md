@@ -1,4 +1,4 @@
-Api criada em python para consolidar conhecimentos do estudo do framework Flask 
+API criada em python para consolidar conhecimentos do estudo do framework Flask 
 
 -FlaskAPI
 
