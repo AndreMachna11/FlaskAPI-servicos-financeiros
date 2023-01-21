@@ -14,19 +14,24 @@ class JurosView(FlaskView):
         body = request.get_json()
         headers = request.headers
 
+        #Verificação de Existencia do token no cabeçalho
         try:
             token = headers['token']
         except:
             return '400 - TOKEN INVALIDO'
 
-        AUTENTICADOR = AutenticacaoService()
-        valida_token = AUTENTICADOR.verifica_validade_token(token)
+        #Verificando Validade do Token Informado no cabeçalho
+        try:
+            AUTENTICADOR = AutenticacaoService()
+            valida_token = AUTENTICADOR.verifica_validade_token(token)
 
-        if valida_token != True:
-            if valida_token == 'TOKEN EXPIRADO':
-                return '400 - TOKEN EXPIRADO'
-            else:
-                return '400 - TOKEN INVALIDO'
+            if valida_token != True:
+                if valida_token == 'TOKEN EXPIRADO':
+                    return '400 - TOKEN EXPIRADO'
+                else:
+                    return '400 - TOKEN INVALIDO'
+        except:
+            return '500 - ERRO INTERNO'
 
         #Verificação de existencia e validade da variavel "valor_presente"
         try:
@@ -70,10 +75,6 @@ class JurosView(FlaskView):
         except:
             return '500 - ERRO INTERNO'
 
-
-        return str(valor_futuro)
-
-    
     @route('/jurosCompostos',methods=['GET', 'POST'])
     def calcula_juros_compostos(self):
         
@@ -81,19 +82,24 @@ class JurosView(FlaskView):
         body = request.get_json()
         headers = request.headers
         
+        #Verificação de Existencia do token no cabeçalho
         try:
             token = headers['token']
         except:
             return '400 - TOKEN INVALIDO'
+        
+        #Verificando Validade do Token Informado no cabeçalho
+        try:
+            AUTENTICADOR = AutenticacaoService()
+            valida_token = AUTENTICADOR.verifica_validade_token(token)
 
-        AUTENTICADOR = AutenticacaoService()
-        valida_token = AUTENTICADOR.verifica_validade_token(token)
-
-        if valida_token != True:
-            if valida_token == 'TOKEN EXPIRADO':
-                return '400 - TOKEN EXPIRADO'
-            else:
-                return '400 - TOKEN INVALIDO'
+            if valida_token != True:
+                if valida_token == 'TOKEN EXPIRADO':
+                    return '400 - TOKEN EXPIRADO'
+                else:
+                    return '400 - TOKEN INVALIDO'
+        except:
+            return '500 - ERRO INTERNO'
 
         #Verificação de existencia e validade da variavel "valor_presente"
         try:
