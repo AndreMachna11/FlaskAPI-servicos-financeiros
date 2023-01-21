@@ -1,3 +1,7 @@
-#FlaskAPI
+Api criada em python para consolidar conhecimentos do estudo do framework Flask 
 
-Repositório criado para consolidar conhecimentos do estudo de desenvolvimento Back-end com Python
+-FlaskAPI
+-Integração com MongoDB
+-Sistema de autenticação de login e senha para geração ded tokens
+-Token que expiram
+-Token obrigatorio para uso dos serviços 
