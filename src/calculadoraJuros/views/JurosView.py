@@ -1,7 +1,7 @@
 from flask_classful import FlaskView, route
 from flask import request
 import json
-from src.dadosFinanceiros.service.JurosService import JurosService
+from src.calculadoraJuros.service.JurosService import JurosService
 from src.autenticacao.service.autenticacaoService import AutenticacaoService
 
 class JurosView(FlaskView):
@@ -12,6 +12,21 @@ class JurosView(FlaskView):
 
         #Acessa dados enviados no corpo da requisição
         body = request.get_json()
+        headers = request.headers
+
+        try:
+            token = headers['token']
+        except:
+            return '400 - TOKEN INVALIDO'
+
+        AUTENTICADOR = AutenticacaoService()
+        valida_token = AUTENTICADOR.verifica_validade_token(token)
+
+        if valida_token != True:
+            if valida_token == 'TOKEN EXPIRADO':
+                return '400 - TOKEN EXPIRADO'
+            else:
+                return '400 - TOKEN INVALIDO'
 
         #Verificação de existencia e validade da variavel "valor_presente"
         try:

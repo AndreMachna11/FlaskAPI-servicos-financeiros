@@ -31,7 +31,7 @@ class AutenticacaoService():
         collection = db['usuarios_api']
         usuario = list(collection.find({"ultimo_token_gerado":token}))
         
-        print(usuario)
+        # print(usuario)
 
         if not usuario:
             return 'TOKEN INVALIDO'
