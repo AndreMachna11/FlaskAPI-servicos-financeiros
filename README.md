@@ -10,6 +10,6 @@ API criada em python para exemplificar o uso do framework Flask
 -Sistema de autenticação de login e senha para geração de tokens
 
 
--Token que expiram
+-Token de acesso que expira em um determinado tempo setado 
 
 -Token obrigatorio para uso dos serviços 
