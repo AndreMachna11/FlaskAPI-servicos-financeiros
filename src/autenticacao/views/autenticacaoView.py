@@ -8,21 +8,24 @@ class AutenticacaoView(FlaskView):
 
     @route('/login',methods=['GET', 'POST'])
     def gera_token(self):
-
+        
+        #Le os dados enviados no cabeçalho da requisição
         headers = request.headers
 
+        #Verifica se a informação usuario foi enviada
         try:
             usuario = headers['usuario']
         except:
             return '400 - USUARIO NAO ENVIADO'
         
+        #Verifica se a informação senha foi enviada
         try:
             senha = headers['senha']
         except:
             return '400 - SENHA NAO ENVIADA'
-
-        try:
         
+        #Chama o serviço que faz a verificação se o usuario informado tem permissão para usar a api e se sim retorna um token valido por 24 horas
+        try:
             AUTENTICADOR = AutenticacaoService()
             token = AUTENTICADOR.login(usuario,senha)
 
@@ -32,10 +35,4 @@ class AutenticacaoView(FlaskView):
             else:
                 return token
         except:
-            return '500 - ERRO INTERNO'
-
-    
-        
-        
-
-
+            return '500 - ERRO INTERNO'  
