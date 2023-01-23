@@ -4,6 +4,8 @@ API criada em python para exemplificar o uso do framework Flask
 
 -Integração com MongoDB
 
+-Pool de conexões com MondoDB
+
 
 -Sistema de autenticação de login e senha para geração de tokens
 
