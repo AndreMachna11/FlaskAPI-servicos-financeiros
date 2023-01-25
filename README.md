@@ -13,3 +13,5 @@ API criada em python para exemplificar o uso do framework Flask
 -Token de acesso que expira em um determinado tempo setado 
 
 -Token obrigatorio para uso dos serviços 
+
+-Responses e codigos de status padronizados
