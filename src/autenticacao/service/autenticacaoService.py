@@ -7,7 +7,7 @@ import json
 class AutenticacaoService():
 
     def login(self,user,password):
-        
+       
         #Abre uma conexão da pool e busca um usuario no banco de dados
         with client_mongo.start_session() as session:
             with session.start_transaction():

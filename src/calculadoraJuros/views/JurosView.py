@@ -3,6 +3,7 @@ from flask import request
 import json
 from src.calculadoraJuros.service.JurosService import JurosService
 from src.autenticacao.service.autenticacaoService import AutenticacaoService
+from src import GeraResponse
 
 class JurosView(FlaskView):
     route_base = 'juros'
@@ -10,7 +11,10 @@ class JurosView(FlaskView):
     @route('/jurosSimples',methods=['GET', 'POST'])
     def calcula_juros_simples(self):
 
-        #Acessa dados enviados no corpo da requisição
+        #Instancia que gerará o response
+        RESPONSE = GeraResponse()
+
+        #Acessa dados enviados no corpo da requisição e no cabeçalho
         body = request.get_json()
         headers = request.headers
 
@@ -18,7 +22,7 @@ class JurosView(FlaskView):
         try:
             token = headers['token']
         except:
-            return '400 - TOKEN INVALIDO'
+            return RESPONSE.gera_response(400,"TOKEN NAO ENVIADO",{})
 
         #Verificando Validade do Token Informado no cabeçalho
         try:
@@ -27,21 +31,21 @@ class JurosView(FlaskView):
 
             if valida_token != True:
                 if valida_token == 'TOKEN EXPIRADO':
-                    return '400 - TOKEN EXPIRADO'
+                    return RESPONSE.gera_response(400,"TOKEN EXPIRADO",{})
                 else:
-                    return '400 - TOKEN INVALIDO'
+                    return RESPONSE.gera_response(400,"TOKEN INVALIDO",{})
         except:
-            return '500 - ERRO INTERNO'
+            return RESPONSE.gera_response(500,"ERRO INTERNO",{})
 
         #Verificação de existencia e validade da variavel "valor_presente"
         try:
             valor_presente = body['valor_presente']
             try:
                 valor_presente = float(valor_presente)
-            except:
-                return '400 - VALOR PRESENTE INVALIDO'
+            except: 
+                return RESPONSE.gera_response(400,"VALOR PRESENTE INVALIDO",{})
         except:
-            return '400 - VALOR PRESENTE NÃO ENVIADO NO CORPO DA REQUISIÇÃO'
+            return RESPONSE.gera_response(400,"VALOR PRESENTE NAO ENVIADO NO CORPO DA REQUISICAO",{})
         
 
         #Verificação de existencia e validade da variavel "taxa"
@@ -50,20 +54,19 @@ class JurosView(FlaskView):
             try:
                 taxa = float(taxa)
             except:
-                return '400 - TAXA DE JUROS PRESENTE INVALIDA'
+                return RESPONSE.gera_response(400,"TAXA DE JUROS INVALIDA",{})
         except:
-            return '400 - TAXA DE JUROS NÃO ENVIADA NO CORPO DA REQUISIÇÃO'
+            return RESPONSE.gera_response(400,"TAXA DE JUROS ENVIADO NO CORPO DA REQUISICAO",{})
         
-
         #Verificação de existencia e validade da variavel "periodo"
         try:
             periodo = body['periodo']
             try:
                 periodo = float(periodo)
             except:
-                return '400 - PERIODO DE TEMPO INVALIDO'
+                return RESPONSE.gera_response(400,"PERIODO DE TEMPO INVALIDO",{})
         except:
-            return '400 - PERIODO DE TEMPO NÃO ENVIADO NO CORPO DA REQUISIÇÃO'
+            return RESPONSE.gera_response(400,"PERIODO DE TEMPO NAO ENVIADO NO CORPO DA REQUISICAO",{})
 
         #Chamada do Serviço e montagem da resposta em json
         try:
@@ -71,13 +74,16 @@ class JurosView(FlaskView):
             valor_futuro = JUROS.calcula_juros_simples(valor_presente,taxa,periodo)
 
             dict_retorno = {"valor_futuro" : str(valor_futuro)}
-            return json.dumps(dict_retorno)
+            return RESPONSE.gera_response(200,"SUCESSO",dict_retorno)
         except:
-            return '500 - ERRO INTERNO'
+            return RESPONSE.gera_response(500,"ERRO INTERNO",{})
 
     @route('/jurosCompostos',methods=['GET', 'POST'])
     def calcula_juros_compostos(self):
         
+        #Instancia que gerará o response
+        RESPONSE = GeraResponse()
+
         #Acessa dados enviados no corpo da requisição
         body = request.get_json()
         headers = request.headers
@@ -86,8 +92,8 @@ class JurosView(FlaskView):
         try:
             token = headers['token']
         except:
-            return '400 - TOKEN INVALIDO'
-        
+            return RESPONSE.gera_response(400,"TOKEN NAO ENVIADO",{}) 
+            
         #Verificando Validade do Token Informado no cabeçalho
         try:
             AUTENTICADOR = AutenticacaoService()
@@ -95,11 +101,11 @@ class JurosView(FlaskView):
 
             if valida_token != True:
                 if valida_token == 'TOKEN EXPIRADO':
-                    return '400 - TOKEN EXPIRADO'
+                    return RESPONSE.gera_response(400,"TOKEN EXPIRADO",{})
                 else:
-                    return '400 - TOKEN INVALIDO'
+                    return RESPONSE.gera_response(400,"TOKEN INVALIDO",{})
         except:
-            return '500 - ERRO INTERNO'
+            return RESPONSE.gera_response(500,"ERRO INTERNO",{})
 
         #Verificação de existencia e validade da variavel "valor_presente"
         try:
@@ -107,9 +113,9 @@ class JurosView(FlaskView):
             try:
                 valor_presente = float(valor_presente)
             except:
-                return '400 - VALOR PRESENTE INVALIDO'
+                return RESPONSE.gera_response(400,"VALOR PRESENTE INVALIDO",{}) 
         except:
-            return '400 - VALOR PRESENTE NÃO ENVIADO NO CORPO DA REQUISIÇÃO'
+            return RESPONSE.gera_response(400,"VALOR PRESENTE NAO ENVIADO NO CORPO DA REQUISICAO",{}) 
 
         #Verificação de existencia e validade da variavel "taxa"
         try:
@@ -117,9 +123,9 @@ class JurosView(FlaskView):
             try:
                 taxa = float(taxa)
             except:
-                return '400 - TAXA DE JUROS PRESENTE INVALIDA'
+                return RESPONSE.gera_response(400,"TAXA DE JUROS INVALIDA",{}) 
         except:
-            return '400 - TAXA DE JUROS NÃO ENVIADA NO CORPO DA REQUISIÇÃO'
+            return RESPONSE.gera_response(400,"TAXA DE JUROS NAO ENVIADA NO CORPO DA REQUISICAO",{}) 
         
         #Verificação de existencia e validade da variavel "periodo"
         try:
@@ -127,9 +133,9 @@ class JurosView(FlaskView):
             try:
                 periodo = float(periodo)
             except:
-                return '400 - PERIODO DE TEMPO INVALIDO'
+                return RESPONSE.gera_response(400,"PERIODO DE TEMPO INVALIDO",{}) 
         except:
-            return '400 - PERIODO DE TEMPO NÃO ENVIADO NO CORPO DA REQUISIÇÃO'
+            return RESPONSE.gera_response(400,"PERIODO DE TEMPO NAO ENVIADO NO CORPO DA REQUISICAO",{})
         
         #Chamada do Serviço e montagem da resposta em json
         try:
@@ -137,7 +143,7 @@ class JurosView(FlaskView):
             valor_futuro = JUROS.calcula_juros_compostos(valor_presente,taxa,periodo)  
             
             dict_retorno = {"valor_futuro" : str(valor_futuro)}
-            return json.dumps(dict_retorno)
+            return RESPONSE.gera_response(200,"SUCESSO",dict_retorno)
         except:
-            return '500 - ERRO INTERNO'
+            return RESPONSE.gera_response(500,"ERRO INTERNO",{})
 
