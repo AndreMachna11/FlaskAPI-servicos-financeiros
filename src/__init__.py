@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 #Pool de conexões para o mongoDB utilizado
-client_mongo = connect(host=os.getenv('string_de_conexao'), connect=False, maxPoolSize=500, db=os.getenv('database')) 
+client_mongo = connect(host=os.getenv('string_de_conexao'), connect=False, maxPoolSize=50, db=os.getenv('database')) 
 
 #Classe que padroniza a geração de response dos serviços da api
 class GeraResponse():
