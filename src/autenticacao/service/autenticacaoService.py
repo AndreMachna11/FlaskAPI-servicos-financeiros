@@ -3,6 +3,8 @@ import secrets
 import datetime as dt
 from datetime import datetime
 import json
+import hashlib
+from src import cache_tokens
 
 class AutenticacaoService():
 
@@ -23,7 +25,7 @@ class AutenticacaoService():
             return 'USUARIO NAO ENCONTRADO'
 
         #Verifica se a senha está correta
-        if usuario[0]['senha'] != password:
+        if usuario[0]['senha'] != hashlib.md5((password).encode()).hexdigest():
             return 'SENHA ERRADA'
 
         #Gera um token aleatorio de 64 caracteres
@@ -39,28 +41,16 @@ class AutenticacaoService():
 
     def verifica_validade_token(self,token):
         
-        #Abre uma conexão da pool e busca um usuario no banco de dados
-        with client_mongo.start_session() as session:
-            with session.start_transaction():
-                usuario = Usuario.objects(ultimo_token_gerado = token)
-        client_mongo.close()
-
-        #Trata o retorno do banco de dados
-        usuario = usuario.to_json()
-        usuario = json.loads(usuario)
-
-        #Verifica se existe um usuario com esse token informado
-        if not usuario:
+        #Checka se o token existe entre os token existentes gerados para usuarios validos
+        try:
+            validade = cache_tokens[token]
+        except:
             return 'TOKEN INVALIDO'
-
-        #Verifica se o Token usado esta dentro do universo de 24 horas de validade
-        data_geracao_ultimo_token = str(usuario[0]['data_geracao_ultimo_token']).split('.')[0]
-        data_geracao_ultimo_token = datetime.strptime(data_geracao_ultimo_token, '%Y-%m-%d %H:%M:%S')
-        difference = dt.datetime.now() - data_geracao_ultimo_token
-
+        
+        #Checka se além de exitir ele foi gerado dentro das ultimas 24 horas
+        difference = dt.datetime.now() - validade
         if difference.total_seconds() > 86400:
+            del cache_tokens[token]
             return 'TOKEN EXPIRADO'
 
         return True
-
-

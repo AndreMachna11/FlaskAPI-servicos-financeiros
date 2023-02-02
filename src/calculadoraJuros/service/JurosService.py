@@ -1,6 +1,5 @@
 class JurosService():
 
-    
     def converte_taxa_mensal_para_anual(self,taxa):
         taxa = (1 + taxa)**(12) - 1
         return taxa
@@ -45,6 +44,8 @@ class JurosService():
     #Serviço que faz o calculo de juros simples
     def calcula_juros_simples(self,valor_presente,taxa,tempo):
         
+        taxa = taxa/100
+
         valor_futuro = valor_presente + valor_presente*taxa*tempo
 
         return float(format(valor_futuro,'.2f'))
