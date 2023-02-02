@@ -3,6 +3,8 @@ from flask import request
 import json
 from src.autenticacao.service.autenticacaoService import AutenticacaoService
 from src import GeraResponse
+from src import cache_tokens
+import datetime
 
 class AutenticacaoView(FlaskView):
     route_base = 'autenticacao'
@@ -37,6 +39,7 @@ class AutenticacaoView(FlaskView):
                 body = {
                     "token" : token
                 }
+                cache_tokens[token] = datetime.datetime.now()
                 return RESPONSE.gera_response(200,"SUCESSO",body)
             else:
                 return RESPONSE.gera_response(400,token,{})

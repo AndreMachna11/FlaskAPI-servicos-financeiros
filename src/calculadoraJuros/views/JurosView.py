@@ -155,11 +155,11 @@ class JurosView(FlaskView):
         try:
             taxa = body['taxa']
             try:
-                taxa = float(taxa)
+                taxa = float(taxa.strip('%'))
             except:
-                return RESPONSE.gera_response(400,"TAXA DE JUROS INVALIDA",{})
+                return RESPONSE.gera_response(400,"TAXA DE JUROS INVALIDA",{}) 
         except:
-            return RESPONSE.gera_response(400,"TAXA DE JUROS ENVIADO NO CORPO DA REQUISICAO",{})
+            return RESPONSE.gera_response(400,"TAXA DE JUROS NAO ENVIADA NO CORPO DA REQUISICAO",{}) 
         
         #Verificação de existencia e validade da variavel "periodo"
         try:
