@@ -9,8 +9,8 @@ load_dotenv(find_dotenv())
 #Pool de conexões para o mongoDB utilizado
 client_mongo = connect(host=os.getenv('string_de_conexao'), connect=False, maxPoolSize=50, db=os.getenv('database')) 
 
-#Varivel que salva os token´s validos ativos para ser usado quando o usuario ja esta auteticado, diminuindo requisiçoes no banco de dados
-cache_tokens = {'6b1ed96aaf21162d690205e9b0bd024f1fcc001a76b20ccc11c08af95bd98980' : datetime.datetime.now()}
+#Varivel que salva os token´s validos ativos para ser usado quando o usuario ja esta auteticado, diminuindo requisiçoes no banco de dados que conferem se o token usado existe e é valido
+cache_tokens = {os.getenv('token_mestre') : datetime.datetime.now() + datetime.timedelta(days=365*100)}
 
 #Classe que padroniza a geração de response dos serviços da api
 class GeraResponse():

@@ -1,10 +1,9 @@
-from src import client_mongo, Usuario
+from src import client_mongo, Usuario, cache_tokens
 import secrets
 import datetime as dt
 from datetime import datetime
 import json
 import hashlib
-from src import cache_tokens
 
 class AutenticacaoService():
 
