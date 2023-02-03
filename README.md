@@ -14,7 +14,7 @@ API criada com o objetivo de aplicar e ampliar conhecimentos em Python e Flask
 
 -Chekagem de tokens via cache para minimizar consultas ao banco de dados
 
--Responses e codigos de status padronizados
+-Responses padronizados em todos os serviços
 
 Serviços:
 
