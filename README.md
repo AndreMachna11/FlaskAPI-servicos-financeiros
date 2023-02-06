@@ -22,7 +22,7 @@ Serviços:
       
       -Calculo de juros simples
       
-      -Calculo de juros compostos (considerando apartes mensal na aplicação)
+      -Calculo de juros compostos (considerando aportes mensais na aplicação)
       
       -Consulta de indices de inflação IPCA e IGPM por data (Banco de dados proprio construido em mongoDB)
       
